@@ -7,9 +7,11 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppComponent } from './app.component';
 import { DescriptiveStatementComponent } from './descriptive-statement/descriptive-statement.component';
 import { RegisterTransactionComponent } from './register-transaction/register-transaction.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { BaseDataSourceStrategy } from './shared/data-sources/base-data-source-strategy';
+import { LocalStorageDataSourceStrategy } from './shared/data-sources/local-storage-data-source-strategy';
 
 @NgModule({
     declarations: [
@@ -30,7 +32,9 @@ import { environment } from '../environments/environment';
         DescriptiveStatementComponent,
         RegisterTransactionComponent,
     ],
-    providers: [],
+    providers: [
+        { provide: BaseDataSourceStrategy, useClass: LocalStorageDataSourceStrategy },
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

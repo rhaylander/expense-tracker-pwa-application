@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { BaseDataSourceStrategy } from '../shared/data-sources/base-data-source-strategy';
+import { Transaction } from '../shared/interfaces/transaction';
+import { DataSourceType } from '../shared/enum/data-source-type';
+import { TransactionType } from '../shared/enum/transaction-type';
+import { OnsNavigator } from 'ngx-onsenui';
+import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'ons-page[register-transaction]',
@@ -8,8 +14,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class RegisterTransactionComponent implements OnInit {
     transactionTypes = [
-        { label: 'Deposit', value: 'deposit' },
-        { label: 'Expense', value: 'expense' },
+        { label: 'Deposit', value: TransactionType.Deposit },
+        { label: 'Expense', value: TransactionType.Expense },
     ];
 
     transactionForm = this.formBuilder.group({
@@ -23,11 +29,26 @@ export class RegisterTransactionComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
+        private dataSource: BaseDataSourceStrategy,
+        private _navigator: OnsNavigator,
     ) { }
 
     ngOnInit() { }
 
     save() {
-        console.log(this.transactionForm.value);
+        return this.dataSource.storeItem<Transaction>(DataSourceType.Transactions, {
+            amount: parseFloat(this.transactionForm.value.amount),
+            createdAt: new Date().toISOString(),
+            description: this.transactionForm.value.description,
+            transactionType: this.transactionForm.value.transactionType,
+        })
+            .pipe(finalize(() => this._navigator.element.popPage()))
+            .subscribe(
+            null,
+            (error) => {
+                console.error(error);
+                alert('Failed to store the transaction. Please, try again.')
+            }
+        );
     }
 }
