@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { DescriptiveStatementComponent } from './descriptive-statement/descriptive-statement.component';
 import { RegisterTransactionComponent } from './register-transaction/register-transaction.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
     declarations: [
@@ -19,6 +21,7 @@ import {ReactiveFormsModule} from '@angular/forms';
         BrowserModule,
         OnsenModule,
         ReactiveFormsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA,
