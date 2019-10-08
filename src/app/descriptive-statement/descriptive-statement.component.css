@@ -1,18 +1,18 @@
 .transaction-item {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 180px auto auto;
     width: 100%;
 }
 
-.transaction-item .amount {
+.amount {
     text-align: right;
 }
 
-.transaction-item .amount.green {
+.amount.green {
     color: green;
 }
 
-.transaction-item .amount.red {
+.amount.red {
     color: red;
 }
 
@@ -20,4 +20,10 @@ ons-list-header {
     font-size: 16px;
     font-weight: bold;
     padding: 12px 6px 12px 15px;
+}
+
+.balance {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 100%;
 }

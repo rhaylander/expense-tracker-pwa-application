@@ -11,8 +11,8 @@
     <div class="content">
         <ons-list>
             <ons-list-header>
-                <div class="transaction-item">
-                    <div class="description">Balance</div>
+                <div class="balance">
+                    <div class="title">Balance</div>
                     <div class="amount" [ngClass]="{
                         green: balance > 0,
                         red: balance < 0
@@ -21,6 +21,7 @@
             </ons-list-header>
             <ons-list-item *ngFor="let transaction of $transactions | async">
                 <div class="transaction-item">
+                    <div>{{ transaction.createdAt | date:'MM/dd/yyyy hh:mm:ss' }}</div>
                     <div class="description">{{ transaction.description }}</div>
                     <div class="amount" [ngClass]="{
                         green: transaction.transactionType === 'deposit',
