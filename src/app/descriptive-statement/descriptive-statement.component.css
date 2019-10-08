@@ -1,0 +1,23 @@
+.transaction-item {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    width: 100%;
+}
+
+.transaction-item .amount {
+    text-align: right;
+}
+
+.transaction-item .amount.green {
+    color: green;
+}
+
+.transaction-item .amount.red {
+    color: red;
+}
+
+ons-list-header {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 6px 12px 15px;
+}

@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { BaseDataSourceStrategy } from '../shared/data-sources/base-data-source-strategy';
-import { Transaction } from '../shared/interfaces/transaction';
-import { DataSourceType } from '../shared/enum/data-source-type';
 import { TransactionType } from '../shared/enum/transaction-type';
 import { OnsNavigator } from 'ngx-onsenui';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
+import { TransactionService } from '../shared/transaction-service';
 
 @Component({
     selector: 'ons-page[register-transaction]',
     templateUrl: './register-transaction.component.html',
     styleUrls: ['./register-transaction.component.css']
 })
-export class RegisterTransactionComponent implements OnInit {
+export class RegisterTransactionComponent {
     transactionTypes = [
         { label: 'Deposit', value: TransactionType.Deposit },
         { label: 'Expense', value: TransactionType.Expense },
@@ -29,20 +27,24 @@ export class RegisterTransactionComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private dataSource: BaseDataSourceStrategy,
-        private _navigator: OnsNavigator,
+        private navigator: OnsNavigator,
+        private transactionService: TransactionService,
     ) { }
 
-    ngOnInit() { }
-
     save() {
-        return this.dataSource.storeItem<Transaction>(DataSourceType.Transactions, {
-            amount: parseFloat(this.transactionForm.value.amount),
-            createdAt: new Date().toISOString(),
-            description: this.transactionForm.value.description,
-            transactionType: this.transactionForm.value.transactionType,
+        const { description, transactionType } = this.transactionForm.value;
+        const amount = Math.abs(parseFloat(this.transactionForm.value.amount));
+
+        return this.transactionService.create({
+            description,
+            transactionType,
+            amount: transactionType === TransactionType.Deposit ? amount : amount * -1,
+            createdAt: new Date(),
         })
-            .pipe(finalize(() => this._navigator.element.popPage()))
+            .pipe(
+                take(1),
+                finalize(() => this.navigator.element.popPage())
+            )
             .subscribe(
             null,
             (error) => {

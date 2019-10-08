@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { OnsenModule } from 'ngx-onsenui';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppComponent } from './app.component';
 import { DescriptiveStatementComponent } from './descriptive-statement/descriptive-statement.component';
@@ -33,10 +32,8 @@ import { LocalStorageDataSourceStrategy } from './shared/data-sources/local-stor
         RegisterTransactionComponent,
     ],
     providers: [
-        { provide: BaseDataSourceStrategy, useClass: LocalStorageDataSourceStrategy },
+        { provide: BaseDataSourceStrategy, useExisting: LocalStorageDataSourceStrategy },
     ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-platformBrowserDynamic().bootstrapModule(AppModule);
