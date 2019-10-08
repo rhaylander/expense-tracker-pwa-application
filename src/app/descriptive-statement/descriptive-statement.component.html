@@ -14,7 +14,7 @@
                 <div class="transaction-item">
                     <div class="description">Balance</div>
                     <div class="amount" [ngClass]="{
-                        green: balance >= 0,
+                        green: balance > 0,
                         red: balance < 0
                     }">{{ balance | currency:'BRL' }}</div>
                 </div>
