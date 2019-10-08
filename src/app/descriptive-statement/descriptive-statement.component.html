@@ -13,10 +13,7 @@
             <ons-list-header>
                 <div class="balance">
                     <div class="title">Balance</div>
-                    <div class="amount" [ngClass]="{
-                        green: balance > 0,
-                        red: balance < 0
-                    }">{{ balance | currency:'BRL' }}</div>
+                    <div class="amount {{balance > 0 ? 'green' : 'red'}}">{{ balance | currency:'BRL' }}</div>
                 </div>
             </ons-list-header>
             <ons-list-item *ngFor="let transaction of $transactions | async">
