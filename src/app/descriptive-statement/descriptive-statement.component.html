@@ -16,7 +16,7 @@
                     <div class="amount" [ngClass]="{
                         green: balance >= 0,
                         red: balance < 0
-                    }">{{ balance }}</div>
+                    }">{{ balance | currency:'BRL' }}</div>
                 </div>
             </ons-list-header>
             <ons-list-item *ngFor="let transaction of $transactions | async">
@@ -25,7 +25,7 @@
                     <div class="amount" [ngClass]="{
                         green: transaction.transactionType === 'deposit',
                         red: transaction.transactionType === 'expense'
-                    }">{{ transaction.amount }}</div>
+                    }">{{ transaction.amount | currency:'BRL' }}</div>
                 </div>
             </ons-list-item>
         </ons-list>
